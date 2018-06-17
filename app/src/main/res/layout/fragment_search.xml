@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.SearchFragment"
+    android:paddingLeft="10dp"
+    >
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+      <LinearLayout android:orientation="horizontal" android:gravity="center" android:layout_weight="1">
+          <Spinner
+              android:id="@+id/spinner_wordLocation"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:gravity="center"
+              />
+          <EditText
+              android:id="@+id/txt_word"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:inputType="textPersonName"
+              android:gravity="center"
+              android:textAlignment="center"
+              android:text=""
+              android:hint="Enter Word Here ..."
+              android:layout_weight="1"
+              />
+      </LinearLayout>
+
+    </TableRow>
+
+    <TableRow>
+        <LinearLayout android:orientation="horizontal" android:layout_weight="1" android:gravity="center">
+            <CheckBox
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/chkbx_tashkel"
+                android:layout_weight="1"
+                android:text="Tashkel"
+                android:gravity="center"
+                />
+            <CheckBox
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/chkbx_basmala"
+                android:layout_weight="1"
+                android:text="Basmala"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
+            <Button
+                android:text="@string/navigation_previous"
+                android:id="@+id/btn_navigatePrevious"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:text="0"
+                android:gravity="center"
+                android:id="@+id/txt_currentPageIndex"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:text="/"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:text="0"
+                android:gravity="center"
+                android:id="@+id/txt_pagesCount"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                />
+            <Button
+                android:text="@string/navigation_next"
+                android:id ="@+id/btn_navigateNext"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                />
+        </LinearLayout>
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/txt_count"
+            android:text="N/A"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:ems="10"
+            android:layout_span="2"
+            android:layout_weight="1"
+            />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <ListView
+            android:id="@+id/lstView_aya"
+            android:layout_weight="3"
+            android:layout_span="3"
+            android:background="#F2F2F2"
+            ></ListView>
+
+    </TableRow>
+
+</TableLayout>

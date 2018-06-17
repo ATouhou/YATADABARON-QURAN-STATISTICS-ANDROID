@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SecondaryActivity">
+
+
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/toolbar_secondary"
+        android:background="@drawable/secondary_activity"
+        >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            >
+            <TextView
+                android:id="@+id/txt_suraName"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="left|center_vertical"
+                android:textColor="#000000"
+                android:textSize="26dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                />
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/txt_suraInfo"
+                android:gravity="left|center_vertical"
+                android:textColor="#484848"
+                android:textSize="16dp"
+                android:layout_span="2"
+                android:layout_weight="1"
+                />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            >
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_weight="1"
+                android:layout_height="130dp"
+                android:layout_width="match_parent"
+                android:background="#F5F5F5"
+                >
+
+            </android.support.design.widget.TabLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/mainViewPager"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:padding="20dp"
+                >
+
+            </android.support.v4.view.ViewPager>
+        </LinearLayout>
+
+    </TableRow>
+</TableLayout>

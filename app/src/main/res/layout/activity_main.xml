@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context=".Activities.MainActivity">
+
+    <!--<android.support.v7.widget.Toolbar android:id="@+id/toolbar_main" android:layout_width="match_parent" android:layout_height="300dp" android:background="@drawable/main_activity" ></android.support.v7.widget.Toolbar>-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/main_activity"
+        android:layout_weight="1"
+        />
+    <ListView
+        android:id="@+id/main_lstView"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
+
+</LinearLayout>

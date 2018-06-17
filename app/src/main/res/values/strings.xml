@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">YATADABARON</string>
+    <string name="title_activity_secondary">SecondaryActivity</string>
+    <string name="navigation_next">&gt;&gt;</string>
+    <string name="navigation_previous">&lt;&lt;</string>
+    <string name="aya">أَفَلَا يَتَدَبَّرُونَ الْقُرْآنَ ۚ وَلَوْ كَانَ مِنْ عِنْدِ غَيْرِ اللَّهِ لَوَجَدُوا فِيهِ اخْتِلَافًا كَثِيرًا</string>
+</resources>

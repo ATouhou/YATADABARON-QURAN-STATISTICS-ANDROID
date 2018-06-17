@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F0F0"
+    android:orientation="vertical"
+    tools:context=".Fragments.ReadFragment">
+
+    <!--<android.support.v7.widget.Toolbar android:id="@+id/toolbar_main" android:layout_width="match_parent" android:layout_height="300dp" android:background="@drawable/main_activity" ></android.support.v7.widget.Toolbar>-->
+
+    <ListView
+        android:id="@+id/lstView_aya_read"
+        android:layout_weight="1"
+        android:layout_span="3"
+        android:background="#FFFFFF"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        ></ListView>
+
+</LinearLayout>
