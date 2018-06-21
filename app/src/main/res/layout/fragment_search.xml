@@ -29,7 +29,7 @@
               android:gravity="center"
               android:textAlignment="center"
               android:text=""
-              android:hint="Enter Word Here ..."
+              android:hint="كلمة البحث هنا"
               android:layout_weight="1"
               />
       </LinearLayout>
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/chkbx_tashkel"
                 android:layout_weight="1"
-                android:text="Tashkel"
+                android:text="التشكيل"
                 android:gravity="center"
                 />
             <CheckBox
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/chkbx_basmala"
                 android:layout_weight="1"
-                android:text="Basmala"
+                android:text="البسملة"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -109,7 +109,7 @@
     <TableRow>
         <TextView
             android:id="@+id/txt_count"
-            android:text="N/A"
+            android:text="غ/م"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

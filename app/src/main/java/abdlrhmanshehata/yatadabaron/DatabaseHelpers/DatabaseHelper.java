@@ -42,8 +42,8 @@ public class DatabaseHelper{
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private final String DB_NAME_INTERNAL_STORAGE = "quran.ar.db";
-    private final String DB_NAME_ASSET = "quran.ar.db";
+    private final String DB_NAME_INTERNAL_STORAGE = "quran.db";
+    private final String DB_NAME_ASSET = "quran.db";
     private String PATH_DB_INTERNAL_STORAGE(){
         return myContext.getFilesDir().getAbsolutePath() + "/" + DB_NAME_INTERNAL_STORAGE;
     }

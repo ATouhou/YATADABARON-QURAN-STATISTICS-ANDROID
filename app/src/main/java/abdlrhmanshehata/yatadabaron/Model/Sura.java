@@ -13,18 +13,24 @@ public class Sura implements Serializable{
     public int SajdaLocation;
     public int AyatCount;
 
-    public String GetSuraLocation(){
+    public String GetSuraLocation(boolean arabic){
         String location = (this.Location==1)?"Makki":"Madani";
+        if(arabic){
+            location = (this.Location==1)?"مكية":"مدنية";
+        }
         return location;
     }
-    public  String GetAyaCountAsString(){
+    public  String GetAyaCountAsString(boolean arabic){
         String ayaCount = String.valueOf(this.AyatCount) + " verses";
+        if(arabic){
+            ayaCount = String.valueOf(this.AyatCount) + " آية";
+        }
         return ayaCount;
     }
-    public String GetSuraInfo(){
-        String suraInfo = GetSuraLocation() + " - " +GetAyaCountAsString();
+    public String GetSuraInfo(boolean arabic){
+        String suraInfo = GetSuraLocation(arabic) + " - " +GetAyaCountAsString(arabic);
         if(SuraID == 0){
-            suraInfo = GetAyaCountAsString();
+            suraInfo = GetAyaCountAsString(arabic);
         }
         return  suraInfo;
     }

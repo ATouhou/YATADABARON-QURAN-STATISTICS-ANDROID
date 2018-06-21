@@ -42,9 +42,9 @@ public class SuraAdapter extends ArrayAdapter<Sura> {
         TextView txt_suraID = (TextView)row.findViewById(R.id.txt_suraID);
 
         txt_suraID.setText(String.valueOf(currentSura.SuraID));
-        txt_suraName.setText(currentSura.SuraNameEnglish);
+        txt_suraName.setText(currentSura.SuraNameArabic);
 
-        txt_suraInfo.setText(currentSura.GetSuraInfo());
+        txt_suraInfo.setText(currentSura.GetSuraInfo(true));
         return row;
     }
 }

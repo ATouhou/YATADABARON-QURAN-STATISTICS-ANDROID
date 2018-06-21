@@ -21,20 +21,20 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if(ShowReadFragment){
             if(position==0){
-                return new ReadFragment();
+                return new LettersFragment();
             }
             if(position==1){
                 return new SearchFragment();
             }
             if(position==2){
-                return new LettersFragment();
+                return new ReadFragment();
             }
         }else{
             if(position==0){
-                return new SearchFragment();
+                return new LettersFragment();
             }
             if(position==1){
-                return new LettersFragment();
+                return new SearchFragment();
             }
         }
         return null;
@@ -54,20 +54,20 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         // Generate title based on item position
         if(ShowReadFragment){
             if(position==0){
-                return "Read";
+                return "الحروف";
             }
             if(position==1){
-                return "Search";
+                return "بحث";
             }
             if(position==2){
-                return "Letters";
+                return "قراءة";
             }
         }else{
             if(position==0){
-                return "Search";
+                return "الحروف";
             }
             if(position==1){
-                return "Letters";
+                return "بحث";
             }
         }
         return null;

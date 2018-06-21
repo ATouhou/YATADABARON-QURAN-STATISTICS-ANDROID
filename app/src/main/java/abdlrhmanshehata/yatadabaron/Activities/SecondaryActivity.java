@@ -48,9 +48,12 @@ public class SecondaryActivity extends AppCompatActivity implements IStatusListe
         MyHelper = new DatabaseHelper(this);
         txt_suraName = (TextView) findViewById(R.id.txt_suraName);
         txt_suraInfo = (TextView) findViewById(R.id.txt_suraInfo);
-
-        txt_suraName.setText(SelectedSura.SuraID +". "+ SelectedSura.SuraNameEnglish);
-        txt_suraInfo.setText(SelectedSura.GetSuraInfo());
+        String sura_id = "";
+        if(SelectedSura.SuraID!=0) {
+            sura_id = SelectedSura.SuraID + ". ";
+        }
+        txt_suraName.setText(sura_id+ SelectedSura.SuraNameArabic);
+        txt_suraInfo.setText(SelectedSura.GetSuraInfo(true));
         final ProgressDialog dialog = ProgressDialog.show(this, "Preparing", "Please wait...", true);
 
         new Thread(new Runnable() {

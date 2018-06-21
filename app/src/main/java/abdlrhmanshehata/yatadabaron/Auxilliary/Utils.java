@@ -3,6 +3,8 @@ package abdlrhmanshehata.yatadabaron.Auxilliary;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +15,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,13 +87,16 @@ public class Utils {
         return new String[]{"ء","آ","ا","أ","إ","ب","ت","ة","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","ه","و","ؤ","ي","ئ","ى"};
     }
     public static void WriteToFile(InputStream inputStream,String path){
-        OutputStream outputStream = null;
+        BufferedOutputStream bfOutputStream = null;
         try{
-            outputStream = new FileOutputStream(path);
-            int byteRead;
-            while ((byteRead = inputStream.read()) != -1) {
-                outputStream.write(byteRead);
+            bfOutputStream = new BufferedOutputStream(new FileOutputStream(path));
+            byte[] buff = new byte [8 * 1024];
+            int len;
+            while ((len = inputStream.read(buff)) > 0) {
+                bfOutputStream.write(buff,0,len);
             }
+            inputStream.close();
+            bfOutputStream.close();
         } catch (IOException ex) {
             Log.e("Utils.java/WriteToFile", "Failed to write to file : " + ex.toString());
         }
@@ -97,9 +107,28 @@ public class Utils {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             outputStreamWriter.write(data);
             outputStreamWriter.close();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                Path from = Paths.get(data);
+                Path to = Paths.get(path);
+                Files.copy(from, to, new CopyOption[]{StandardCopyOption.REPLACE_EXISTING});
+            }
         }
         catch (IOException ioe) {
             Log.e("Utils.java/WriteToFile", "Failed to write to file : " + ioe.toString());
         }
+    }
+    public String ToArabic(String x){
+        String y =  x;
+        y = y.replace("0","");
+        y = y.replace("1","");
+        y = y.replace("2","");
+        y = y.replace("3","");
+        y = y.replace("4","");
+        y = y.replace("5","");
+        y = y.replace("6","");
+        y = y.replace("7","");
+        y = y.replace("8","");
+        y = y.replace("9","");
+        return y;
     }
 }

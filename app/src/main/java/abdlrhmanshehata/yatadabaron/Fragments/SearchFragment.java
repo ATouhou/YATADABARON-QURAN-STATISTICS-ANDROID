@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         myParent = (SecondaryActivity) getActivity();
-        View view =  inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
         txt_word = (TextView) view.findViewById(R.id.txt_word);
         aya_listView = (ListView) view.findViewById(R.id.lstView_aya);
         txt_count = (TextView) view.findViewById(R.id.txt_count);
@@ -69,8 +70,8 @@ public class SearchFragment extends Fragment {
         chkbx_basmala = (CheckBox) view.findViewById(R.id.chkbx_basmala);
 
 
-        WordLocation[] wordLocations = new WordLocation[]{WordLocation.Exactly,WordLocation.Contains};
-        spinner_wordLocation.setAdapter(new ArrayAdapter<WordLocation>(myParent,R.layout.support_simple_spinner_dropdown_item,wordLocations));
+        String[] wordLocations = new String[]{"مطابقة", "تحتوي على"};
+        spinner_wordLocation.setAdapter(new ArrayAdapter<String>(myParent, R.layout.support_simple_spinner_dropdown_item, wordLocations));
         CurrentPageIndex = -1;
         PagesCount = 0;
         ResultsPerPage = 100;
@@ -80,7 +81,7 @@ public class SearchFragment extends Fragment {
         btn_navigateNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Results!=null && CurrentPageIndex<=PagesCount && CurrentPageIndex >= 1){
+                if (Results != null && CurrentPageIndex <= PagesCount && CurrentPageIndex >= 1) {
                     CurrentPageIndex++;
                     Navigate();
                 }
@@ -90,7 +91,7 @@ public class SearchFragment extends Fragment {
         btn_navigatePrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Results!=null && CurrentPageIndex<=PagesCount && CurrentPageIndex > 1){
+                if (Results != null && CurrentPageIndex <= PagesCount && CurrentPageIndex > 1) {
                     CurrentPageIndex--;
                     Navigate();
                 }
@@ -100,50 +101,77 @@ public class SearchFragment extends Fragment {
         txt_word.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                final ProgressDialog dialog = ProgressDialog.show(myParent, "Executing", "Please wait...", true);
-                Results = new ArrayList<Aya>();
-                ayaAdapter = new SearchAyaAdapter(myParent, R.layout.custom_layout_aya, new Aya[]{}, SearchWord, chkbx_tashkel.isChecked());
-                aya_listView.setAdapter(ayaAdapter);
-                PagesCount = 0;
-                CurrentPageIndex = -1;
-                txt_pagesCount.setText("0");
-                txt_currentPageIndex.setText("0");
-                txt_count.setText("N/A");
-                //Start New Search
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String word = txt_word.getText().toString();
-                        int suraID = myParent.SelectedSura.SuraID;
-                        SearchMode mode = SearchMode.SURA;
-                        if (suraID == 0){
-                            mode = SearchMode.QURAN;
-                        }
-                        WordLocation location = (WordLocation) spinner_wordLocation.getSelectedItem();
-                        Results = myParent.MyHelper.SearchForWord(word, location,suraID,mode,chkbx_basmala.isChecked());
-                        SearchWord = word;
-                        myParent.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(Results!=null) {
-                                    int quotient = (Results.size() / ResultsPerPage);
-                                    int reminder = (Results.size() % ResultsPerPage);
-                                    PagesCount = quotient + ((reminder > 0) ? 1 : 0) * 1;
-                                    CurrentPageIndex = 1;
-                                    Navigate();
-                                    txt_count.setText(String.valueOf(Results.size()) + " Results Found.");
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-                    }
-                }).start();
+                Search();
                 return false;
             }
         });
+
+        chkbx_basmala.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (txt_word.getText()!=null && txt_word.getText().length()>0) {
+                    Search();
+                }
+            }
+        });
+
+        chkbx_tashkel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (txt_word.getText()!=null && txt_word.getText().length()>0) {
+                    Search();
+                }
+            }
+        });
+
+
+
         return view;
     }
-
+    public void Search(){
+        final ProgressDialog dialog = ProgressDialog.show(myParent, "Executing", "Please wait...", true);
+        Results = new ArrayList<Aya>();
+        ayaAdapter = new SearchAyaAdapter(myParent, R.layout.custom_layout_aya, new Aya[]{}, SearchWord, chkbx_tashkel.isChecked());
+        aya_listView.setAdapter(ayaAdapter);
+        PagesCount = 0;
+        CurrentPageIndex = -1;
+        txt_pagesCount.setText("0");
+        txt_currentPageIndex.setText("0");
+        txt_count.setText("غ/م");
+        //Start New Search
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String word = txt_word.getText().toString();
+                int suraID = myParent.SelectedSura.SuraID;
+                SearchMode mode = SearchMode.SURA;
+                if (suraID == 0){
+                    mode = SearchMode.QURAN;
+                }
+                WordLocation location =  spinner_wordLocation.getSelectedItem() == "تحتوي على" ? WordLocation.Contains:WordLocation.Exactly;
+                Results = myParent.MyHelper.SearchForWord(word, location,suraID,mode,chkbx_basmala.isChecked());
+                SearchWord = word;
+                myParent.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(Results!=null) {
+                            int quotient = (Results.size() / ResultsPerPage);
+                            int reminder = (Results.size() % ResultsPerPage);
+                            PagesCount = quotient + ((reminder > 0) ? 1 : 0) * 1;
+                            CurrentPageIndex = 1;
+                            Navigate();
+                            String found_msg = "لا يوجد نتائج!";
+                            if(Results.size()>0){
+                                found_msg = String.format("تم العثور علي %s آية",String.valueOf(Results.size()));
+                            }
+                            txt_count.setText(found_msg);
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
     public void Navigate(){
         if (Results!=null && CurrentPageIndex<=PagesCount && CurrentPageIndex >= 1) {
 

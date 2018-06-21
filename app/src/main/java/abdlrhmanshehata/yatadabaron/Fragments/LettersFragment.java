@@ -107,6 +107,8 @@ public class LettersFragment extends Fragment{
                             BarDataSet barData = new BarDataSet(entries, "");
                             myChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(result.keySet()));
                             if(basmala) {
+                                barData.setColors(Color.parseColor("#CA241D"));
+                            }else{
                                 barData.setColors(Color.parseColor("#FFA800"));
                             }
                             myChart.setData(new BarData(barData));

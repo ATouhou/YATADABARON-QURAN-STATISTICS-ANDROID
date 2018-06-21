@@ -63,8 +63,7 @@ public class ReadAyaAdapter extends ArrayAdapter<Aya> {
         }else{
             textToBeViewed  = ayaText;
         }
-        txt_text.setText(textToBeViewed);
-        txt_id.setText(currentAya.GetAyaInfo());
+        txt_text.setText(textToBeViewed + " {"+String.valueOf(currentAya.AyaIndex)+"}");
         return row;
     }
 }
