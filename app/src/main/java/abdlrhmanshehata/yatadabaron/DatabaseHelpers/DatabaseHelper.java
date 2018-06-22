@@ -8,7 +8,6 @@ import android.util.Log;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ import abdlrhmanshehata.yatadabaron.Auxilliary.SearchMode;
 import abdlrhmanshehata.yatadabaron.Auxilliary.Utils;
 import abdlrhmanshehata.yatadabaron.Auxilliary.WordLocation;
 import abdlrhmanshehata.yatadabaron.Model.Aya;
-import abdlrhmanshehata.yatadabaron.Auxilliary.LetterFrequency;
 
 import abdlrhmanshehata.yatadabaron.Model.Sura;
 
@@ -211,9 +209,9 @@ public class DatabaseHelper{
         }
         db.close();
         FireQueryStatusEvent(QueryStatus.READY);
-        Map<String,Float> results = LetterFrequency.BuildLetterFrequencyMap(Utils.ArabicLetters(),result.toArray(new Float[]{}));
+        Map<String,Float> results = Utils.BuildLetterFrequencyMap(Utils.ArabicLetters(),result.toArray(new Float[]{}));
         if (sort){
-            results = LetterFrequency.Sort(Utils.ArabicLetters(),result.toArray(new Float[]{}));
+            results = Utils.SortLetterFrequency(Utils.ArabicLetters(),result.toArray(new Float[]{}));
         }
         return results;
     }

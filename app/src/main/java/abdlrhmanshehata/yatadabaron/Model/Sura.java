@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
+import abdlrhmanshehata.yatadabaron.Auxilliary.Localization;
+
 public class Sura implements Serializable{
     public int SuraID;
     public String SuraNameArabic;
@@ -23,7 +25,7 @@ public class Sura implements Serializable{
     public  String GetAyaCountAsString(boolean arabic){
         String ayaCount = String.valueOf(this.AyatCount) + " verses";
         if(arabic){
-            ayaCount = String.valueOf(this.AyatCount) + " آية";
+            ayaCount = Localization.getArabicNumber(this.AyatCount) + " آية";
         }
         return ayaCount;
     }

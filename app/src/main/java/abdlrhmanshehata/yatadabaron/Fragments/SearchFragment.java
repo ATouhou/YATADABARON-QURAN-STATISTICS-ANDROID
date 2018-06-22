@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import abdlrhmanshehata.yatadabaron.Activities.SecondaryActivity;
+import abdlrhmanshehata.yatadabaron.Auxilliary.Localization;
 import abdlrhmanshehata.yatadabaron.Auxilliary.SearchMode;
 import abdlrhmanshehata.yatadabaron.Auxilliary.WordLocation;
 import abdlrhmanshehata.yatadabaron.DataAdapters.SearchAyaAdapter;
@@ -131,12 +132,12 @@ public class SearchFragment extends Fragment {
     public void Search(){
         final ProgressDialog dialog = ProgressDialog.show(myParent, "Executing", "Please wait...", true);
         Results = new ArrayList<Aya>();
-        ayaAdapter = new SearchAyaAdapter(myParent, R.layout.custom_layout_aya, new Aya[]{}, SearchWord, chkbx_tashkel.isChecked());
+        ayaAdapter = new SearchAyaAdapter(myParent, R.layout.inflater_aya, new Aya[]{}, SearchWord, chkbx_tashkel.isChecked());
         aya_listView.setAdapter(ayaAdapter);
         PagesCount = 0;
         CurrentPageIndex = -1;
-        txt_pagesCount.setText("0");
-        txt_currentPageIndex.setText("0");
+        txt_pagesCount.setText(Localization.getArabicNumber(0));
+        txt_currentPageIndex.setText(Localization.getArabicNumber(0));
         txt_count.setText("غ/م");
         //Start New Search
         new Thread(new Runnable() {
@@ -162,7 +163,7 @@ public class SearchFragment extends Fragment {
                             Navigate();
                             String found_msg = "لا يوجد نتائج!";
                             if(Results.size()>0){
-                                found_msg = String.format("تم العثور علي %s آية",String.valueOf(Results.size()));
+                                found_msg = String.format("تم العثور علي %s آية", Localization.getArabicNumber(Results.size()));
                             }
                             txt_count.setText(found_msg);
                             dialog.dismiss();
@@ -175,16 +176,16 @@ public class SearchFragment extends Fragment {
     public void Navigate(){
         if (Results!=null && CurrentPageIndex<=PagesCount && CurrentPageIndex >= 1) {
 
-            txt_pagesCount.setText(String.valueOf(PagesCount));
+            txt_pagesCount.setText(Localization.getArabicNumber(PagesCount));
             int start = (CurrentPageIndex - 1) * ResultsPerPage;
             int end = start + ResultsPerPage;
             if (CurrentPageIndex == PagesCount) {
                 end = Results.size() - 1;
             }
             Aya[] ayaSubList = Results.subList(start, end + 1).toArray(new Aya[]{});
-            ayaAdapter = new SearchAyaAdapter(myParent, R.layout.custom_layout_aya, ayaSubList, SearchWord, chkbx_tashkel.isChecked());
+            ayaAdapter = new SearchAyaAdapter(myParent, R.layout.inflater_aya, ayaSubList, SearchWord, chkbx_tashkel.isChecked());
             aya_listView.setAdapter(ayaAdapter);
-            txt_currentPageIndex.setText(String.valueOf(CurrentPageIndex));
+            txt_currentPageIndex.setText(Localization.getArabicNumber(CurrentPageIndex));
         }
     }
 }

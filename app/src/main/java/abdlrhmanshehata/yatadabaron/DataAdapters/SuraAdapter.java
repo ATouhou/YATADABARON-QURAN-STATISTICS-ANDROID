@@ -12,28 +12,28 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import abdlrhmanshehata.yatadabaron.Auxilliary.Localization;
 import abdlrhmanshehata.yatadabaron.Model.Sura;
 import abdlrhmanshehata.yatadabaron.R;
 
 public class SuraAdapter extends ArrayAdapter<Sura> {
-    Context context;
     int layoutResourceId;
-    Sura[] data = new Sura[]{};
     public SuraAdapter(@NonNull Context context, int resource,Sura[] data) {
         super(context, resource,data);
         this.layoutResourceId = resource;
-        this.context = context;
-        this.data = data;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View row = convertView;
-        Sura currentSura = data[position];
+        Sura currentSura = super.getItem(position);
         if(row == null)
         {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+            LayoutInflater inflater = ((Activity)super.getContext()).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
         }
 
@@ -41,8 +41,13 @@ public class SuraAdapter extends ArrayAdapter<Sura> {
         TextView txt_suraInfo =(TextView)row.findViewById(R.id.txt_suraInfo);
         TextView txt_suraID = (TextView)row.findViewById(R.id.txt_suraID);
 
-        txt_suraID.setText(String.valueOf(currentSura.SuraID));
+        if (currentSura.SuraID!=0) {
+            txt_suraID.setText(Localization.getArabicNumber(currentSura.SuraID));
+        }else{
+            txt_suraID.setText(" ");
+        }
         txt_suraName.setText(currentSura.SuraNameArabic);
+
 
         txt_suraInfo.setText(currentSura.GetSuraInfo(true));
         return row;

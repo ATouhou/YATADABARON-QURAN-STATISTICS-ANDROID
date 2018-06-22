@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import abdlrhmanshehata.yatadabaron.Auxilliary.Localization;
 import abdlrhmanshehata.yatadabaron.Auxilliary.SearchMode;
 import abdlrhmanshehata.yatadabaron.Model.Aya;
 import abdlrhmanshehata.yatadabaron.Model.Sura;
@@ -63,7 +64,7 @@ public class ReadAyaAdapter extends ArrayAdapter<Aya> {
         }else{
             textToBeViewed  = ayaText;
         }
-        txt_text.setText(textToBeViewed + " {"+String.valueOf(currentAya.AyaIndex)+"}");
+        txt_text.setText(textToBeViewed + " {"+ Localization.getArabicNumber(currentAya.AyaIndex)+"}");
         return row;
     }
 }

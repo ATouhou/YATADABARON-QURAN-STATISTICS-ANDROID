@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements IStatusListener {
                     @Override
                     public void run() {
                         List<Sura> data = myHelper.GetSuras();
-                        final SuraAdapter adapter = new SuraAdapter(myContext,R.layout.custom_layout_chapters,data.toArray(new Sura[]{}));
+                        final SuraAdapter adapter = new SuraAdapter(myContext,R.layout.inflater_chapters,data.toArray(new Sura[]{}));
                         sura_lst_view.setAdapter(adapter);
                         sura_lst_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements IStatusListener {
                 });
             }
         }).start();
-
     }
 
     @Override

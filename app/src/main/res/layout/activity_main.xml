@@ -10,14 +10,36 @@
     >
 
     <!--<android.support.v7.widget.Toolbar android:id="@+id/toolbar_main" android:layout_width="match_parent" android:layout_height="300dp" android:background="@drawable/main_activity" ></android.support.v7.widget.Toolbar>-->
-
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/main_activity"
-        android:layout_weight="1"
-        />
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:textSize="29dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="أَفَلَا يَتَدَبَّرُونَ الْقُرْآنَ"
+            android:background="@drawable/main_activity"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="2"
+            android:background="#F4F4F4">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|center_vertical"
+                android:text="يتدبرون - محرك بحث قرآني مفتوح المصدر صدر في شوال 1439هـ.\nهذا التطبيق مجاني لكل الباحثين في احصائيات القرآن الكريم وغير مقصود من ورائه التربح بأي شكل من الأشكال كما أنه خالي تماماً من أي اعلانات تجارية"/>
+        </LinearLayout>
+
+    </LinearLayout>
     <ListView
         android:id="@+id/main_lstView"
         android:padding="10dp"

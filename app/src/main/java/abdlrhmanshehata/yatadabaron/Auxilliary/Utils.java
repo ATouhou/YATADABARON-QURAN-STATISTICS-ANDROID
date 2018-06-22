@@ -1,6 +1,7 @@
 package abdlrhmanshehata.yatadabaron.Auxilliary;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -21,10 +22,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class Utils {
     public static InputStream ReadAssetAsStream(Context c, String assetName){
@@ -117,18 +126,35 @@ public class Utils {
             Log.e("Utils.java/WriteToFile", "Failed to write to file : " + ioe.toString());
         }
     }
-    public String ToArabic(String x){
-        String y =  x;
-        y = y.replace("0","");
-        y = y.replace("1","");
-        y = y.replace("2","");
-        y = y.replace("3","");
-        y = y.replace("4","");
-        y = y.replace("5","");
-        y = y.replace("6","");
-        y = y.replace("7","");
-        y = y.replace("8","");
-        y = y.replace("9","");
-        return y;
+    public static Map<String, Float> SortLetterFrequency(String[] letters, Float[] freq) {
+        Map<String,Float> unsortMap = new HashMap<String,Float>();
+        for (int i = 0; i < freq.length; i++) {
+            String s = letters[i];
+            Float f = freq[i];
+            unsortMap.put(s, f);
+        }
+        List<Map.Entry<String, Float>> list = new LinkedList<Map.Entry<String, Float>>(unsortMap.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Float>>() {
+            public int compare(Map.Entry<String, Float> o1,
+                               Map.Entry<String, Float> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        Map<String, Float> sortedMap = new LinkedHashMap<String, Float>();
+        for (Map.Entry<String, Float> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
+
+    public static Map<String,Float> BuildLetterFrequencyMap(String[] letters,Float[] freq){
+        Map<String,Float> unsortMap = new HashMap<String,Float>();
+        for (int i = 0; i < freq.length; i++) {
+            String s = letters[i];
+            Float f = freq[i];
+            unsortMap.put(s, f);
+        }
+        return unsortMap;
     }
 }

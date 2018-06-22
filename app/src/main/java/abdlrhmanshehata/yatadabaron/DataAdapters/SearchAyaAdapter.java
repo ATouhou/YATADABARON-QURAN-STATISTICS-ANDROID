@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import abdlrhmanshehata.yatadabaron.Auxilliary.Localization;
 import abdlrhmanshehata.yatadabaron.Auxilliary.SearchMode;
 import abdlrhmanshehata.yatadabaron.Model.Aya;
 import abdlrhmanshehata.yatadabaron.Model.Sura;
@@ -53,8 +54,8 @@ public class SearchAyaAdapter extends ArrayAdapter<Aya> {
         TextView txt_id =(TextView)row.findViewById(R.id.txt_ayaID);
 
         String suraNameArabic =data[position].SuraNameArabic;
-        String ayaIndex = String.valueOf(data[position].AyaIndex);
-        String header = String.format("%s (%s)",suraNameArabic,ayaIndex);
+        String ayaIndex = Localization.getArabicNumber(data[position].AyaIndex);
+        String header = String.format("%s : {%s}",suraNameArabic,ayaIndex);
         String ayaText = data[position].AyaText;
         String ayaTextTashkel = data[position].AyaTextTashkel;
 
