@@ -8,44 +8,66 @@
     android:orientation="vertical"
     tools:context=".Activities.MainActivity"
     >
-
-    <!--<android.support.v7.widget.Toolbar android:id="@+id/toolbar_main" android:layout_width="match_parent" android:layout_height="300dp" android:background="@drawable/main_activity" ></android.support.v7.widget.Toolbar>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textStyle="bold"
-            android:textSize="29dp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="أَفَلَا يَتَدَبَّرُونَ الْقُرْآنَ"
-            android:background="@drawable/main_activity"/>
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:background="@drawable/main_activity">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="2"
-            android:background="#F4F4F4">
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
+                android:layout_weight="1"
                 android:text="يتدبرون - محرك بحث قرآني مفتوح المصدر صدر في شوال 1439هـ.\nهذا التطبيق مجاني لكل الباحثين في احصائيات القرآن الكريم وغير مقصود من ورائه التربح بأي شكل من الأشكال كما أنه خالي تماماً من أي اعلانات تجارية"/>
-        </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textSize="29dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="يَتَدَبَّرُونََ"/>
 
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_wholeQuran"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:background="#F5F5F5"
+            android:text="ابحث في القرآن الكريم كاملاً"/>
+        <Button
+            android:id="@+id/btn_singleChapter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:textStyle="bold"
+            android:textSize="17dp"
+            android:background="#F9F9F9"
+            android:text="أو ابحث في سورة معينة"/>
+            />
     </LinearLayout>
+
     <ListView
         android:id="@+id/main_lstView"
         android:padding="10dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:visibility="gone"
         />
 
 </LinearLayout>

@@ -15,11 +15,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import abdlrhmanshehata.yatadabaron.Auxilliary.Localization;
 import abdlrhmanshehata.yatadabaron.Auxilliary.SearchMode;
+import abdlrhmanshehata.yatadabaron.Auxilliary.Utils;
+import abdlrhmanshehata.yatadabaron.Auxilliary.WordLocation;
 import abdlrhmanshehata.yatadabaron.Model.Aya;
 import abdlrhmanshehata.yatadabaron.Model.Sura;
 import abdlrhmanshehata.yatadabaron.R;
@@ -30,14 +33,15 @@ public class SearchAyaAdapter extends ArrayAdapter<Aya> {
     Aya[] data = new Aya[]{};
     String SearchWord = "";
     boolean Tashkel = false;
-
-    public SearchAyaAdapter(@NonNull Context context, int resource, Aya[] data, String SearchWord, boolean tashkel) {
+    WordLocation myWordLocation;
+    public SearchAyaAdapter(@NonNull Context context, int resource, Aya[] data, String SearchWord, boolean tashkel, WordLocation location) {
         super(context, resource,data);
         this.layoutResourceId = resource;
         this.context = context;
         this.data = data;
         this.SearchWord = SearchWord;
         this.Tashkel = tashkel;
+        myWordLocation = location;
     }
 
     @NonNull
@@ -65,8 +69,16 @@ public class SearchAyaAdapter extends ArrayAdapter<Aya> {
         int end = 0;
         if (Tashkel){
             textToBeViewed=(ayaTextTashkel);
-//            start = ayaText.indexOf(SearchWord);
-//            end = start + SearchWord.length();
+            for (int i = 0; i < ayaTextTashkel.split(" ").length; i++) {
+                String wordTashkel = ayaTextTashkel.split(" ")[i];
+                boolean isMatch = Utils.TashkelWordMatches(SearchWord,wordTashkel,myWordLocation);
+                if(isMatch){
+                    int start_index = ayaTextTashkel.indexOf(wordTashkel);
+                    int end_index = start_index+wordTashkel.length();
+                    start = start_index;
+                    end = end_index;
+                }
+            }
         }else{
             textToBeViewed  = ayaText;
             if(textToBeViewed.contains(SearchWord)) {

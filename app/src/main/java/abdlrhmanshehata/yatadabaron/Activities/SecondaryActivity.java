@@ -25,29 +25,37 @@ import abdlrhmanshehata.yatadabaron.R;
 public class SecondaryActivity extends AppCompatActivity implements IStatusListener {
     public Sura SelectedSura;
     public DatabaseHelper MyHelper;
+    public boolean wholeQuranMode = false;
 
     private TextView txt_suraName;
     private TextView txt_suraInfo;
     private Context myContext;
     private Toolbar toolbar_secondary;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_secondary);
 
         SelectedSura = (Sura) getIntent().getSerializableExtra("SELECTED_SURA");
-        setTitle(SelectedSura.SuraNameEnglish);
+        if(SelectedSura==null){
+            wholeQuranMode = true;
+        }
+        //setTitle(SelectedSura.SuraNameEnglish);
         toolbar_secondary = (Toolbar) findViewById(R.id.toolbar_secondary);
         setSupportActionBar(toolbar_secondary);
         MyHelper = new DatabaseHelper(this);
         txt_suraName = (TextView) findViewById(R.id.txt_suraName);
         txt_suraInfo = (TextView) findViewById(R.id.txt_suraInfo);
-        String sura_id = "";
-        if(SelectedSura.SuraID!=0) {
-            sura_id = Localization.getArabicNumber(SelectedSura.SuraID) + ". ";
+
+        if(!wholeQuranMode) {
+            String sura_id = Localization.getArabicNumber(SelectedSura.SuraID) + ". ";
+            txt_suraName.setText(sura_id+ SelectedSura.SuraNameArabic);
+            txt_suraInfo.setText(SelectedSura.GetSuraInfo(true));
+        }else{
+            txt_suraName.setText("القرآن الكريم كاملاً");
+            txt_suraInfo.setText(Localization.getArabicNumber(6236)+ " آية");
         }
-        txt_suraName.setText(sura_id+ SelectedSura.SuraNameArabic);
-        txt_suraInfo.setText(SelectedSura.GetSuraInfo(true));
         final ProgressDialog dialog = ProgressDialog.show(this, "جاري التحميل", "برجاء الانتظار ...", true);
 
         new Thread(new Runnable() {
@@ -59,8 +67,7 @@ public class SecondaryActivity extends AppCompatActivity implements IStatusListe
                     public void run() {
                         final TabLayout myTab = (TabLayout) findViewById(R.id.main_tabLayout);
                         final ViewPager myViewPager = (ViewPager) findViewById(R.id.mainViewPager);
-                        boolean showRead = SelectedSura.SuraID!=0;
-                        FragmentsAdapter adapter= new FragmentsAdapter(myContext,getSupportFragmentManager(),showRead);
+                        FragmentsAdapter adapter= new FragmentsAdapter(myContext,getSupportFragmentManager(),!wholeQuranMode);
                         myViewPager.setAdapter(adapter);
                         myTab.setupWithViewPager(myViewPager);
                         myViewPager.setCurrentItem(adapter.getCount());

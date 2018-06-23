@@ -10,7 +10,7 @@
         >
         <TextView
             android:id="@+id/txt_suraID"
-            android:textSize="16dp"
+            android:textSize="15dp"
             android:textColor="#4F4F4F"
             android:layout_weight="4"
             />
@@ -18,7 +18,7 @@
             android:id="@+id/txt_suraName"
             android:gravity="right|center_vertical"
             android:textColor="#000000"
-            android:textSize="24dp"
+            android:textSize="21dp"
             android:textStyle="bold"
             android:layout_weight="1"
             android:padding="4dp"
@@ -29,7 +29,7 @@
             android:id="@+id/txt_suraInfo"
             android:gravity="right|center_vertical"
             android:textColor="#4F4F4F"
-            android:textSize="16dp"
+            android:textSize="15dp"
             android:layout_span="2"
             android:layout_weight="1"
             android:padding="4dp"

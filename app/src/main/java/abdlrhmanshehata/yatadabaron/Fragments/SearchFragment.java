@@ -2,12 +2,14 @@ package abdlrhmanshehata.yatadabaron.Fragments;
 
 
 import android.app.ProgressDialog;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import abdlrhmanshehata.yatadabaron.Activities.SecondaryActivity;
@@ -48,6 +52,7 @@ public class SearchFragment extends Fragment {
     private String SearchWord;
     private CheckBox chkbx_tashkel;
     private CheckBox chkbx_basmala;
+    private CheckBox chkbx_advanced_search;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -69,9 +74,9 @@ public class SearchFragment extends Fragment {
         btn_navigatePrevious = (Button) view.findViewById(R.id.btn_navigatePrevious);
         chkbx_tashkel = (CheckBox) view.findViewById(R.id.chkbx_tashkel);
         chkbx_basmala = (CheckBox) view.findViewById(R.id.chkbx_basmala);
+        chkbx_advanced_search = (CheckBox) view.findViewById(R.id.chkbx_advanced_search);
 
-
-        String[] wordLocations = new String[]{"مطابقة", "تحتوي على"};
+        String[] wordLocations = WordLocationMap().keySet().toArray(new String[]{});
         spinner_wordLocation.setAdapter(new ArrayAdapter<String>(myParent, R.layout.support_simple_spinner_dropdown_item, wordLocations));
         CurrentPageIndex = -1;
         PagesCount = 0;
@@ -110,18 +115,38 @@ public class SearchFragment extends Fragment {
         chkbx_basmala.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (txt_word.getText()!=null && txt_word.getText().length()>0) {
-                    Search();
-                }
+                Search();
             }
         });
 
         chkbx_tashkel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (txt_word.getText()!=null && txt_word.getText().length()>0) {
+                Search();
+            }
+        });
+
+        chkbx_advanced_search.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    spinner_wordLocation.setVisibility(View.VISIBLE);
+                }else{
+                    spinner_wordLocation.setSelection(0);
+                    spinner_wordLocation.setVisibility(View.GONE);
                     Search();
                 }
+            }
+        });
+
+        spinner_wordLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Search();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -129,49 +154,59 @@ public class SearchFragment extends Fragment {
 
         return view;
     }
+    private LinkedHashMap<String,WordLocation> WordLocationMap(){
+        LinkedHashMap<String,WordLocation> result = new LinkedHashMap();
+        result.put("تحتوي علي",WordLocation.Contains);
+        result.put("مطابقة تماماً",WordLocation.Exactly);
+        result.put("تبدأ بـ",WordLocation.StartsWith);
+        result.put("تنتهي بـ",WordLocation.EndsWith);
+        return result;
+    }
     public void Search(){
-        final ProgressDialog dialog = ProgressDialog.show(myParent, "Executing", "Please wait...", true);
-        Results = new ArrayList<Aya>();
-        ayaAdapter = new SearchAyaAdapter(myParent, R.layout.inflater_aya, new Aya[]{}, SearchWord, chkbx_tashkel.isChecked());
-        aya_listView.setAdapter(ayaAdapter);
-        PagesCount = 0;
-        CurrentPageIndex = -1;
-        txt_pagesCount.setText(Localization.getArabicNumber(0));
-        txt_currentPageIndex.setText(Localization.getArabicNumber(0));
-        txt_count.setText("غ/م");
-        //Start New Search
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String word = txt_word.getText().toString();
-                int suraID = myParent.SelectedSura.SuraID;
-                SearchMode mode = SearchMode.SURA;
-                if (suraID == 0){
-                    mode = SearchMode.QURAN;
-                }
-                WordLocation location =  spinner_wordLocation.getSelectedItem() == "تحتوي على" ? WordLocation.Contains:WordLocation.Exactly;
-                Results = myParent.MyHelper.SearchForWord(word, location,suraID,mode,chkbx_basmala.isChecked());
-                SearchWord = word;
-                myParent.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(Results!=null) {
-                            int quotient = (Results.size() / ResultsPerPage);
-                            int reminder = (Results.size() % ResultsPerPage);
-                            PagesCount = quotient + ((reminder > 0) ? 1 : 0) * 1;
-                            CurrentPageIndex = 1;
-                            Navigate();
-                            String found_msg = "لا يوجد نتائج!";
-                            if(Results.size()>0){
-                                found_msg = String.format("تم العثور علي %s آية", Localization.getArabicNumber(Results.size()));
+        if (txt_word.getText()!=null && txt_word.getText().length()>0) {
+            final WordLocation location = WordLocationMap().get(spinner_wordLocation.getSelectedItem());
+            final ProgressDialog dialog = ProgressDialog.show(myParent, "Executing", "Please wait...", true);
+            Results = new ArrayList<Aya>();
+            ayaAdapter = new SearchAyaAdapter(myParent, R.layout.inflater_aya, new Aya[]{}, SearchWord, chkbx_tashkel.isChecked(),location);
+            aya_listView.setAdapter(ayaAdapter);
+            PagesCount = 0;
+            CurrentPageIndex = -1;
+            txt_pagesCount.setText(Localization.getArabicNumber(0));
+            txt_currentPageIndex.setText(Localization.getArabicNumber(0));
+            txt_count.setText("غ/م");
+            //Start New Search
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String word = txt_word.getText().toString();
+                    int suraID = myParent.wholeQuranMode?0:myParent.SelectedSura.SuraID;
+                    SearchMode mode = SearchMode.SURA;
+                    if (suraID == 0) {
+                        mode = SearchMode.QURAN;
+                    }
+                    Results = myParent.MyHelper.SearchForWord(word, location, suraID, mode, chkbx_basmala.isChecked());
+                    SearchWord = word;
+                    myParent.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (Results != null) {
+                                int quotient = (Results.size() / ResultsPerPage);
+                                int reminder = (Results.size() % ResultsPerPage);
+                                PagesCount = quotient + ((reminder > 0) ? 1 : 0) * 1;
+                                CurrentPageIndex = 1;
+                                Navigate();
+                                String found_msg = "لا يوجد نتائج!";
+                                if (Results.size() > 0) {
+                                    found_msg = String.format("تم العثور علي %s آية", Localization.getArabicNumber(Results.size()));
+                                }
+                                txt_count.setText(found_msg);
                             }
-                            txt_count.setText(found_msg);
                             dialog.dismiss();
                         }
-                    }
-                });
-            }
-        }).start();
+                    });
+                }
+            }).start();
+        }
     }
     public void Navigate(){
         if (Results!=null && CurrentPageIndex<=PagesCount && CurrentPageIndex >= 1) {
@@ -182,8 +217,10 @@ public class SearchFragment extends Fragment {
             if (CurrentPageIndex == PagesCount) {
                 end = Results.size() - 1;
             }
+
             Aya[] ayaSubList = Results.subList(start, end + 1).toArray(new Aya[]{});
-            ayaAdapter = new SearchAyaAdapter(myParent, R.layout.inflater_aya, ayaSubList, SearchWord, chkbx_tashkel.isChecked());
+            WordLocation location = WordLocationMap().get(spinner_wordLocation.getSelectedItem());
+            ayaAdapter = new SearchAyaAdapter(myParent, R.layout.inflater_aya, ayaSubList, SearchWord, chkbx_tashkel.isChecked(),location);
             aya_listView.setAdapter(ayaAdapter);
             txt_currentPageIndex.setText(Localization.getArabicNumber(CurrentPageIndex));
         }

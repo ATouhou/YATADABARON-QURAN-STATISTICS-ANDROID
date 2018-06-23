@@ -22,9 +22,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
+import java.text.Collator;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -124,6 +126,22 @@ public class Utils {
         }
         catch (IOException ioe) {
             Log.e("Utils.java/WriteToFile", "Failed to write to file : " + ioe.toString());
+        }
+    }
+    public static boolean TashkelWordMatches(String keyword,String tashkelKeyword,WordLocation wordLocation){
+        String raw = "";
+        for (int i = 0; i < tashkelKeyword.length(); i++) {
+            String crnt_char = String.valueOf(tashkelKeyword.charAt(i));
+            if (Arrays.asList(Utils.ArabicLetters()).contains(crnt_char)){
+                raw += crnt_char;
+            };
+        }
+        boolean isMatchingExactly =(Arrays.equals(raw.getBytes(),keyword.getBytes()));
+        boolean isContaining = raw.contains(keyword);
+        if (wordLocation == WordLocation.Exactly){
+            return isMatchingExactly;
+        }else {
+            return isContaining;
         }
     }
     public static Map<String, Float> SortLetterFrequency(String[] letters, Float[] freq) {

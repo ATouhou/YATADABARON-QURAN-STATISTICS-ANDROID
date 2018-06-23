@@ -28,6 +28,7 @@ import abdlrhmanshehata.yatadabaron.Auxilliary.LetterFrequencyModel;
 import abdlrhmanshehata.yatadabaron.Auxilliary.SearchMode;
 import abdlrhmanshehata.yatadabaron.Auxilliary.Utils;
 import abdlrhmanshehata.yatadabaron.DataAdapters.LetterAdapter;
+import abdlrhmanshehata.yatadabaron.Model.Sura;
 import abdlrhmanshehata.yatadabaron.R;
 
 
@@ -44,6 +45,7 @@ public class LettersFragment extends Fragment{
     private Map<String,Float> LettersFrequencySortedNotBasmala;
     private Map<String,Float> LettersFrequencyNotSortedBasmala;
     private Map<String,Float> LettersFrequencyNotSortedNotBasmala;
+    private int SuraID;
 
     public LettersFragment() {
         // Required empty public constructor
@@ -61,15 +63,14 @@ public class LettersFragment extends Fragment{
         chkbx_chart_letters = (CheckBox) view.findViewById(R.id.chkbx_chart_letters);
         lstView_lettersTable = (ListView) view.findViewById(R.id.lstView_lettersTable);
 
-
-        int input_id = myParent.SelectedSura.SuraID;
-        SearchMode input_mode = (input_id!=0)? SearchMode.SURA:SearchMode.QURAN;
-        LettersFrequencyNotSortedBasmala =  myParent.MyHelper.GetLettersFrequency(input_id, input_mode,true,false);
+        SuraID = (!myParent.wholeQuranMode)? myParent.SelectedSura.SuraID:0;
+        SearchMode input_mode = (!myParent.wholeQuranMode)? SearchMode.SURA:SearchMode.QURAN;
+        LettersFrequencyNotSortedBasmala =  myParent.MyHelper.GetLettersFrequency(SuraID, input_mode,true,false);
         LettersFrequencySortedBasmala = Utils.SortLetterFrequency(LettersFrequencyNotSortedBasmala.keySet().toArray(new String[]{}), LettersFrequencyNotSortedBasmala.values().toArray(new Float[]{}));
-        LettersFrequencyNotSortedNotBasmala =  myParent.MyHelper.GetLettersFrequency(input_id, input_mode,false,false);
+        LettersFrequencyNotSortedNotBasmala =  myParent.MyHelper.GetLettersFrequency(SuraID, input_mode,false,false);
         LettersFrequencySortedNotBasmala =  Utils.SortLetterFrequency(LettersFrequencyNotSortedNotBasmala.keySet().toArray(new String[]{}),LettersFrequencyNotSortedNotBasmala.values().toArray(new Float[]{}));;
 
-        DrawLettersFrequencyBySura(myParent.SelectedSura.SuraID);
+        DrawLettersFrequencyBySura(SuraID);
         chkbx_basmala_letters.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,7 +97,7 @@ public class LettersFragment extends Fragment{
         if (chkbx_chart_letters.isChecked()) {
             lstView_lettersTable.setVisibility(View.GONE);
             myChart.setVisibility(View.VISIBLE);
-            DrawLettersFrequencyBySura(myParent.SelectedSura.SuraID);
+            DrawLettersFrequencyBySura(SuraID);
         }else{
             lstView_lettersTable.setVisibility(View.VISIBLE);
             myChart.setVisibility(View.GONE);
@@ -153,7 +154,8 @@ public class LettersFragment extends Fragment{
                                 entries.add(new BarEntry(i, frequency));
                                 i++;
                             }
-                            BarDataSet barData = new BarDataSet(entries, myParent.SelectedSura.SuraNameArabic);
+                            String suraName = (myParent.wholeQuranMode)?"القرآن الكريم كاملاً":myParent.SelectedSura.SuraNameArabic;
+                            BarDataSet barData = new BarDataSet(entries, suraName);
                             myChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(result.keySet()));
                             if (chkbx_basmala_letters.isChecked()) {
                                 barData.setColors(Color.parseColor("#FF5900"));

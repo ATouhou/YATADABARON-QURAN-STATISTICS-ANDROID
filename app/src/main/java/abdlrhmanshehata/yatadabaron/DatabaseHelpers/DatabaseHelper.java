@@ -132,22 +132,25 @@ public class DatabaseHelper{
         FireQueryStatusEvent(QueryStatus.EXECUTING);
         Cursor c = null;
         List<Aya> result = null;
-        String keyword = word ;
+        String condition_like = "";
         String from = "verses_content";
         if(!basmala){
             from = "verses_content_no_basmala";
         }
         try {
-            switch (location){
-                case Exactly:keyword="% "+keyword+" %";
-                case StartsWith:keyword=keyword+"%";
-                case EndsWith:keyword="%"+keyword;
-                case Contains:keyword="%"+keyword+"%";
-                default:keyword=keyword;
+            condition_like = String.format("(%s.c2text like '%% %s %%' or %s.c2text like '%% %s' or %s.c2text like '%s %%')",from,word,from,word,from,word);
+            if(location == WordLocation.Contains){
+                condition_like = String.format("%s.c2text like '%%%s%%'",from,word);
             }
-            String condition = mode == SearchMode.AYA ? "and "+from+".docid="+id : ((mode == SearchMode.SURA)?"and "+from+".c0sura="+id:"");
-            String sql = String.format("select %s.docid,%s.c0sura,%s.c1ayah, %s.c2text,arabic_text.text,chapters.arabic as sura_name_arabic,chapters.latin as sura_name_english from %s inner join arabic_text on arabic_text.sura = %s.c0sura and arabic_text.ayah = %s.c1ayah inner join chapters on chapters.c0sura = %s.c0sura where %s.c2text like '%s' %s",
-                    from,from,from,from,from,from,from,from,from,keyword,condition);
+            if(location == WordLocation.StartsWith){
+                condition_like = String.format("%s.c2text like '%s%%'",from,word);
+            }
+            if(location == WordLocation.EndsWith){
+                condition_like = String.format("%s.c2text like '%%%s'",from,word);
+            }
+            String condition_id = (mode == SearchMode.AYA) ? "and "+from+".docid="+id : ((mode == SearchMode.SURA)?"and "+from+".c0sura="+id:"");
+            String sql = String.format("select %s.docid,%s.c0sura,%s.c1ayah, %s.c2text,arabic_text.text,chapters.arabic as sura_name_arabic,chapters.latin as sura_name_english from %s inner join arabic_text on arabic_text.sura = %s.c0sura and arabic_text.ayah = %s.c1ayah inner join chapters on chapters.c0sura = %s.c0sura where %s %s",
+                    from,from,from,from,from,from,from,from,condition_like,condition_id);
             c = db.rawQuery(sql, null);
             result = new ArrayList<Aya>();
             while(c.moveToNext()){
@@ -179,7 +182,14 @@ public class DatabaseHelper{
         FireQueryStatusEvent(QueryStatus.READY);
         return result;
     }
-
+    public Sura QuranVirtualSura(String arName,String enName){
+        Sura sura = new Sura();
+        sura.SuraNameArabic = arName;
+        sura.SuraNameEnglish = enName;
+        sura.AyatCount=6236;
+        sura.SuraID=0;
+        return sura;
+    }
     public  Map<String,Float> GetLettersFrequency(int id, SearchMode mode,boolean basmala,boolean sort){
         if(MyQueryStatus != QueryStatus.READY || MyConnectionStatus != ConnectionStatus.CONNECTED){return null;}
         SQLiteDatabase db = GetDatabaseInstance();
@@ -236,14 +246,6 @@ public class DatabaseHelper{
                 sura.AyatCount = Integer.parseInt(c.getString(6));
                 result.add(sura);
             }
-            Sura wholeQuran = new Sura();
-            wholeQuran.AyatCount = 6236;
-            wholeQuran.SajdaLocation = 0;
-            wholeQuran.SuraNameEnglish = "Holy Quran";
-            wholeQuran.SuraNameArabic = "القرآن الكريم";
-            wholeQuran.SuraID = 0;
-            wholeQuran.Location = 0;
-            result.add(0,wholeQuran);
         } catch (Exception ex) {
             Log.e("DatabaseHelper", "GetSuras()/" + ex.getMessage());
         }

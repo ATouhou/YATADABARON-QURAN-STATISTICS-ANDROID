@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.SearchFragment"
     android:paddingLeft="10dp"
+    android:paddingTop="10dp"
     >
 
     <TableRow
@@ -13,14 +14,8 @@
         >
 
 
-      <LinearLayout android:orientation="horizontal" android:gravity="center" android:layout_weight="1">
-          <Spinner
-              android:id="@+id/spinner_wordLocation"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_weight="1"
-              android:gravity="center"
-              />
+      <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_weight="1">
+
           <EditText
               android:id="@+id/txt_word"
               android:layout_width="match_parent"
@@ -29,8 +24,19 @@
               android:gravity="center"
               android:textAlignment="center"
               android:text=""
+              android:textSize="20dp"
               android:hint="كلمة البحث هنا"
+              android:paddingLeft="25dp"
+              android:paddingRight="25dp"
               android:layout_weight="1"
+              />
+          <Spinner
+              android:visibility="gone"
+              android:id="@+id/spinner_wordLocation"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:gravity="center"
               />
       </LinearLayout>
 
@@ -42,6 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:id="@+id/chkbx_tashkel"
+                android:checked="true"
                 android:layout_weight="1"
                 android:text="التشكيل"
                 android:gravity="center"
@@ -52,6 +59,14 @@
                 android:id="@+id/chkbx_basmala"
                 android:layout_weight="1"
                 android:text="البسملة"
+                android:gravity="center"
+                />
+            <CheckBox
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:id="@+id/chkbx_advanced_search"
+                android:layout_weight="1"
+                android:text="بحث متقدم"
                 android:gravity="center"
                 />
         </LinearLayout>
